@@ -2,13 +2,13 @@ import React from 'react'
 import { Nav,NavContainer,NavLogo,Burger,Menu,MenuItem,MenuLink,NavBtn,BtnLink } from './NavElements'
 import { FaBars } from 'react-icons/fa';
 
-const NavBar = () => {
+const NavBar = ({toggleNav}) => {
   return (
     <>
       <Nav>
         <NavContainer>
           <NavLogo to="/">LOGO</NavLogo>
-          <Burger>
+          <Burger onClick={toggleNav}>
             <FaBars/>
           </Burger>
 
@@ -23,12 +23,12 @@ const NavBar = () => {
               <MenuLink to="discover">Discover</MenuLink>
             </MenuItem>
             <MenuItem>
-              <MenuLink to="signup">Sign UP</MenuLink>
+              <MenuLink to="signup">Sign Up</MenuLink>
             </MenuItem>
           </Menu>
 
           <NavBtn>
-            <BtnLink to="/sign-in">Sign In</BtnLink>
+            <BtnLink to="/signin">Sign In</BtnLink>
           </NavBtn>
 
         </NavContainer>

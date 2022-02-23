@@ -31,6 +31,7 @@ export const Burger = styled.nav`
         color:#fff;
         height:80px;
         font-size:1.8rem;
+        cursor:pointer;
         position:absolute;
         top:0;
         right:0;
@@ -60,7 +61,7 @@ export const MenuLink = styled(LinkS)`
     }
 `
 export const NavBtn = styled.button`
-    background:green;
+    background:red;
     display:flex;
     align-items: center;
     justify-content:center;
@@ -72,7 +73,6 @@ export const NavBtn = styled.button`
 
     &:hover{
         background:#fff;
-        color:green;
         transition:all 0.2s ease-in-out;
     }
 
@@ -82,5 +82,5 @@ export const NavBtn = styled.button`
 `
 export const BtnLink = styled(LinkR)`
     text-decoration:none;
-    color:red;
+    color:#000;
 `
