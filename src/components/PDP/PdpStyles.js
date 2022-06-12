@@ -77,12 +77,8 @@ export const AttributeName = styled.div`
   margin: 18px 0px 10px;
   ${mobile({ fontSize: "16px" })}
 `;
-export const AttributeWrap = styled.div`
-  width: auto;
-  height: 50px;
-  display: flex;
-`;
 export const AttributeValue = styled.div`
+  margin-top:10px;
   margin-right: 12px;
   padding: 20px;
   border: 1px solid #1d1f22;
@@ -92,6 +88,7 @@ export const AttributeValue = styled.div`
   align-items: center;
   background: ${(props) => props.bg};
   user-select: none;
+  display:inline-block;
 
   &:active {
     transform: translateY(1.3px);
