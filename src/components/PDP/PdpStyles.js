@@ -3,7 +3,7 @@ import { mobile } from "../../responsive";
 import { tablet } from "../../responsive";
 
 export const PDPContainer = styled.div`
-  padding-top: 60px;
+  padding: 60px 20px;
   margin: auto;
 `;
 export const Container = styled.div`

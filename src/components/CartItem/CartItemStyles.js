@@ -41,7 +41,7 @@ export const Price = styled.div`
   ${mobile({ fontSize: "20px", fontWeight: "600" })}
 `;
 export const AttributeName = styled(Sizes)`
-  font-family: "Roboto Condensed";
+  /* font-family: "Roboto Condensed"; */
   margin: 7px 0px;
   ${mobile({ fontWeight: "500" })}
 `;
@@ -58,7 +58,7 @@ export const AttributeValue = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Source Sans Pro";
+  /* font-family: "Source Sans Pro"; */
   font-weight: 400;
   font-size: 16px;
   letter-spacing: 0.05em;

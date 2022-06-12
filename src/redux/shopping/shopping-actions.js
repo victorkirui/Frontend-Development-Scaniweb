@@ -56,12 +56,12 @@ export const fetchCurrencies = (currency) => {
   };
 };
 
-export const addToCart = (itemID,attributeValues) => {
+export const addToCart = (itemID, attributeValues) => {
   return {
     type: actionTypes.ADD_TO_CART,
     payload: {
       id: itemID,
-      attributes:attributeValues,
+      attributes: attributeValues,
     },
   };
 };

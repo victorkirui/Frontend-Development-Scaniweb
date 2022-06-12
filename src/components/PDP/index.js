@@ -54,7 +54,6 @@ class PDP extends PureComponent {
   render() {
     const { active } = this.state;
     const { currentItem, addToCart } = this.props;
-
     return (
       <PDPContainer>
         <Container>

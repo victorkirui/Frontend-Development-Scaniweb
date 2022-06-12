@@ -1,30 +1,27 @@
 import React, { PureComponent } from "react";
 import "./App.css";
+import styled from "styled-components";
+
+// Components
 import ProductsList from "./components/ProductsList";
 import Nav from "./components/Nav";
 import PDP from "./components/PDP";
 import Cart from "./components/Cart";
-import styled from "styled-components";
-
 import Overlay from "./components/Overlay";
 
+// State
 import { connect } from "react-redux";
 import { fetchProducts } from "./redux/shopping/shopping-actions";
 import { fetchfilteredProducts } from "./redux/shopping/shopping-actions";
 
 // Routing
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 // Grapghql
 import gql from "graphql-tag";
 import { apolloClient } from "./index";
 
-// OUR QUERY
+// QUERY
 const GET_PRODUCTS = gql`
   query {
     categories {
@@ -65,7 +62,7 @@ const Container = styled.div`
 const ContentWrapper = styled.div`
   max-width: 1440px;
   margin: auto;
-  padding: 0px 30px;
+  padding: 0px 10px;
 `;
 
 class App extends PureComponent {
@@ -106,7 +103,7 @@ class App extends PureComponent {
   }
 
   render() {
-    const { currentItem, cartOverlayOpen } = this.props;
+    const { cartOverlayOpen } = this.props;
     return (
       <Router>
         <div className="App">
@@ -118,18 +115,12 @@ class App extends PureComponent {
               <Routes>
                 <Route exact path="/" element={<ProductsList />} />
                 <Route exact path="/cart" element={<Cart />} />
-                {/* <Route exact path="/cart-overlay" element={<CartOverlay />} /> */}
+                <Route path="/product/:id" element={<PDP />} />
                 {/* {!currentItem ? (
-                <Redirect to="/" />
-              ) : (
-                <Route exact path="/product/:id" element={<PDP />} />
-              )} */}
-
-                {!currentItem ? (
                   <Route exact path="/" element={<Navigate to="/" replace />} />
                 ) : (
                   <Route path="/product/:id" element={<PDP />} />
-                )}
+                )} */}
               </Routes>
             </ContentWrapper>
           </Container>
@@ -141,7 +132,6 @@ class App extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    currentItem: state.shop.currentItem,
     cartOverlayOpen: state.shop.cartOverlayOpen,
   };
 };

@@ -3,7 +3,7 @@ import { mobile } from "../../responsive";
 import { tablet } from "../../responsive";
 
 export const CartWrapper = styled.div`
-  padding-top: 30px;
+  padding: 30px 20px;
   ${tablet({ paddingTop: "5px" })}
   ${mobile({ paddingTop: "0px" })}
 `;

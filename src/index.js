@@ -4,7 +4,8 @@ import App from "./App";
 
 // Store
 import { Provider } from "react-redux";
-import store from "./redux/store";
+import store, { persistor } from "./redux/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 // Graphql
 import ApolloClient from "apollo-boost";
@@ -21,9 +22,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <ApolloProvider client={apolloClient}>
-        <App />
-      </ApolloProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <ApolloProvider client={apolloClient}>
+          <App />
+        </ApolloProvider>
+      </PersistGate>
     </Provider>
   </React.StrictMode>
 );

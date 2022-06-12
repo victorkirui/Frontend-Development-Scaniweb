@@ -6,7 +6,7 @@ import { mobile } from "../../responsive";
 export const Container = styled.div`
   max-width: 1400px;
   margin: auto;
-  padding: 20px 30px 10px;
+  padding: 20px 20px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
