@@ -72,10 +72,6 @@ class index extends PureComponent {
     }
   }
 
-  componentDidMount() {
-    console.log(this.props.itemData);
-  }
-
   // Thumbnail Image sliders functionality
   handleNextSlide() {
     this.setState({
