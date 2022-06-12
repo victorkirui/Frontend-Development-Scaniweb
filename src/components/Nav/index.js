@@ -43,7 +43,6 @@ class Nav extends PureComponent {
       cartCount: 0,
     };
 
-    this.handleToggleCart = this.handleToggleCart.bind(this);
     this.handleCount = this.handleCount.bind(this);
   }
 
@@ -82,11 +81,6 @@ class Nav extends PureComponent {
     ) {
       this.handleCount();
     }
-  }
-
-  // Toggle cart overlay
-  handleToggleCart() {
-    this.props.toggleCartOverlay();
   }
 
   // FILTER PRODUCTS BY CATEGORY
@@ -148,7 +142,7 @@ class Nav extends PureComponent {
             </Select>
           </CurrencySymbol>
           <CartIcon>
-            <BasketWrapper onClick={this.handleToggleCart}>
+            <BasketWrapper onClick={() => this.props.toggleCartOverlay()}>
               <BasketIcon />
               <span>{this.state.cartCount}</span>
             </BasketWrapper>

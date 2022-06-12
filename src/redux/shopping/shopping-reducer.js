@@ -5,7 +5,7 @@ const INITIAL_STATE = {
   filteredProducts: [],
   cart: [],
   currentItem: null,
-  cartOverlayOpen: false,
+  cartOverlayOpen: true,
   currencyData: {},
 };
 

@@ -6,7 +6,7 @@ import { mobile } from "../../responsive";
 export const Container = styled.div`
   max-width: 1400px;
   margin: auto;
-  padding: 20px 20px 10px;
+  padding: 20px 30px 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -15,7 +15,7 @@ export const Container = styled.div`
 export const LinkItems = styled.div`
   display: flex;
   align-items: center;
-  ${mobile({ flex: "2"})}
+  ${mobile({ flex: "2" })}
 `;
 export const LinkItem = styled(Link)`
   margin-right: 15px;
@@ -60,6 +60,7 @@ export const CartIcon = styled.div`
     position: absolute;
     top: -10px;
     right: -10px;
+    user-select: none;
   }
 `;
 export const BasketWrapper = styled.div``;

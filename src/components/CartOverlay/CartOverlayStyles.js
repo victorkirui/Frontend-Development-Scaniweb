@@ -9,7 +9,7 @@ export const Container = styled.div`
   background: #fff;
   position: absolute;
   right: 0;
-  z-index: 99;
+  z-index: 9999999999;
   ${mobile({ padding: "0px 20px" })}
 `;
 export const Title = styled.h1`

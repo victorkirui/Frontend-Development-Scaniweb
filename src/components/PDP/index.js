@@ -29,18 +29,18 @@ class PDP extends PureComponent {
 
     this.state = {
       active: 0,
-      attributes:[],
+      attributes: [],
     };
 
     this.handleIndexClick = this.handleIndexClick.bind(this);
     this.handleSelectAttribute = this.handleSelectAttribute.bind(this);
   }
-  
-  handleSelectAttribute(e){
+
+  handleSelectAttribute(e) {
     this.setState((prevState) => ({
-      attributes:[
+      attributes: [
         ...prevState.attributes,
-        {[e.target.parentNode.innerText.split("\n")[0]]: e.target.innerText},
+        { [e.target.parentNode.innerText.split("\n")[0]]: e.target.innerText },
       ],
     }));
   }
@@ -88,13 +88,15 @@ class PDP extends PureComponent {
               item ? (
                 <React.Fragment key={item.id}>
                   <AttributeName>
-                    <React.Fragment>
-                       {item.name}
-                    </React.Fragment>
+                    <React.Fragment>{item.name}</React.Fragment>
                     <br />
                     {item.items?.map((item) => {
                       return (
-                        <AttributeValue bg={item.value} key={item.id} onClick={(e)=> this.handleSelectAttribute(e)}>
+                        <AttributeValue
+                          bg={item.value}
+                          key={item.id}
+                          onClick={(e) => this.handleSelectAttribute(e)}
+                        >
                           {item.value.charAt(0) === "#" ? " " : item.value}
                         </AttributeValue>
                       );
@@ -115,7 +117,7 @@ class PDP extends PureComponent {
             {currentItem.inStock ? (
               <Button
                 cursor={currentItem.inStock}
-                onClick={() => addToCart(currentItem.id,this.state.attributes)}
+                onClick={() => addToCart(currentItem.id, this.state.attributes)}
               >
                 ADD TO CART
               </Button>
@@ -123,7 +125,7 @@ class PDP extends PureComponent {
               <Button
                 cursor={currentItem.inStock}
                 disabled
-                onClick={() => addToCart(currentItem.id,this.state.attributes)}
+                onClick={() => addToCart(currentItem.id, this.state.attributes)}
               >
                 ADD TO CART
               </Button>
@@ -147,7 +149,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addToCart: (id,attributeValues) => dispatch(addToCart(id,attributeValues)),
+    addToCart: (id, attributeValues) =>
+      dispatch(addToCart(id, attributeValues)),
   };
 };
 

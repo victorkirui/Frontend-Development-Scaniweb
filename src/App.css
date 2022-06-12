@@ -2,11 +2,13 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   font-family: "Raleway", sans-serif;
+  user-select: none;
 }
 body {
   margin: 0;
   margin: auto;
   position: relative;
+  overflow-x: hidden;
 }
 .slide {
   opacity: 0;
@@ -17,4 +19,3 @@ body {
   transition-duration: 1s;
   transform: scale(1.04);
 }
-

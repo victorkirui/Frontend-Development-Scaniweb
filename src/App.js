@@ -6,6 +6,8 @@ import PDP from "./components/PDP";
 import Cart from "./components/Cart";
 import styled from "styled-components";
 
+import Overlay from "./components/Overlay";
+
 import { connect } from "react-redux";
 import { fetchProducts } from "./redux/shopping/shopping-actions";
 import { fetchfilteredProducts } from "./redux/shopping/shopping-actions";
@@ -57,9 +59,13 @@ const GET_PRODUCTS = gql`
 `;
 
 const Container = styled.div`
-  max-width: 1400px;
   margin: auto;
-  padding: 0px 20px;
+  position: relative;
+`;
+const ContentWrapper = styled.div`
+  max-width: 1440px;
+  margin: auto;
+  padding: 0px 30px;
 `;
 
 class App extends PureComponent {
@@ -100,28 +106,32 @@ class App extends PureComponent {
   }
 
   render() {
-    const { currentItem } = this.props;
+    const { currentItem, cartOverlayOpen } = this.props;
     return (
       <Router>
         <div className="App">
           <Nav />
+
           <Container>
-            <Routes>
-              <Route exact path="/" element={<ProductsList />} />
-              <Route exact path="/cart" element={<Cart />} />
-              {/* <Route exact path="/cart-overlay" element={<CartOverlay />} /> */}
-              {/* {!currentItem ? (
+            {cartOverlayOpen && <Overlay />}
+            <ContentWrapper>
+              <Routes>
+                <Route exact path="/" element={<ProductsList />} />
+                <Route exact path="/cart" element={<Cart />} />
+                {/* <Route exact path="/cart-overlay" element={<CartOverlay />} /> */}
+                {/* {!currentItem ? (
                 <Redirect to="/" />
               ) : (
                 <Route exact path="/product/:id" element={<PDP />} />
               )} */}
 
-              {!currentItem ? (
-                <Route exact path="/" element={<Navigate to="/" replace />} />
-              ) : (
-                <Route path="/product/:id" element={<PDP />} />
-              )}
-            </Routes>
+                {!currentItem ? (
+                  <Route exact path="/" element={<Navigate to="/" replace />} />
+                ) : (
+                  <Route path="/product/:id" element={<PDP />} />
+                )}
+              </Routes>
+            </ContentWrapper>
           </Container>
         </div>
       </Router>
@@ -132,6 +142,7 @@ class App extends PureComponent {
 const mapStateToProps = (state) => {
   return {
     currentItem: state.shop.currentItem,
+    cartOverlayOpen: state.shop.cartOverlayOpen,
   };
 };
 
