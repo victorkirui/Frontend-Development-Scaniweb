@@ -46,7 +46,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
                 ? { ...item, qty: item.qty + 1 }
                 : item
             )
-          : [...state.cart, { ...item, qty: 1, attributes:action.payload.attributeValues}],
+          : [...state.cart, { ...item, qty: 1, attributes:action.payload.attributes}],
       };
 
     case actionTypes.REMOVE_FROM_CART:
