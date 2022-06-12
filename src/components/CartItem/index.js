@@ -107,22 +107,20 @@ class index extends PureComponent {
               {itemData.prices[0].currency.symbol}
               {itemData.prices[0].amount}
             </Price>
-            {itemData.attributes?.map((item) =>
+
+          {itemData.attributes?.map((item,index) =>
               item ? (
-                <React.Fragment key={item.id}>
-                  <AttributeName>{item.name}:</AttributeName>
+                <React.Fragment key={index}>
+                  <AttributeName>{Object.keys(item)}</AttributeName>
                   <AttributeWrap>
-                    {item.items?.map((item) => {
-                      return (
-                        <AttributeValue bg={item.value} key={item.id}>
-                          {item.value.charAt(0) === "#" ? " " : item.value}
+                        <AttributeValue bg={item.value}>
+                          {Object.values(item)}
                         </AttributeValue>
-                      );
-                    })}
                   </AttributeWrap>
                 </React.Fragment>
               ) : null
             )}
+
           </LeftContainer>
           <RightContainer>
             <CountContainer>
