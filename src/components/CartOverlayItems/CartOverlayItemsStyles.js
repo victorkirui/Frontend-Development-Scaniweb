@@ -46,10 +46,6 @@ export const AttributeValue = styled.div`
   align-items: center;
   background: ${(props) => props.bg};
   user-select: none;
-
-  &:active {
-    transform: translateY(1.3px);
-  }
 `;
 
 export const RightContainer = styled.div`
