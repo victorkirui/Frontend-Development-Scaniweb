@@ -1,4 +1,4 @@
-# Scandiweb Minicart StoreFront
+# Frontend React Minicart StoreFront
 
 ### Screenshot of My Folder Scructure
 
