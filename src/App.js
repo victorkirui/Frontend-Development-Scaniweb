@@ -116,11 +116,6 @@ class App extends PureComponent {
                 <Route exact path="/" element={<ProductsList />} />
                 <Route exact path="/cart" element={<Cart />} />
                 <Route path="/product/:id" element={<PDP />} />
-                {/* {!currentItem ? (
-                  <Route exact path="/" element={<Navigate to="/" replace />} />
-                ) : (
-                  <Route path="/product/:id" element={<PDP />} />
-                )} */}
               </Routes>
             </ContentWrapper>
           </Container>

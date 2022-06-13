@@ -59,12 +59,12 @@ class Product extends PureComponent {
                 </Link>
 
                 {product.inStock ? (
-                  <CartIcon
-                    onClick={() =>
-                      this.handleAddToCart(product.id, product.inStock)
-                    }
-                    cursor={product.inStock}
-                  />
+                  <Link
+                    to={`/product/${product.id}`}
+                    onClick={() => loadCurrentItem(product)}
+                  >
+                    <CartIcon cursor={product.inStock} />
+                  </Link>
                 ) : (
                   <CartIcon
                     disabled
