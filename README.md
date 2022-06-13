@@ -1,3 +1,9 @@
+# Scandiweb Minicart StoreFront
+
+### Screenshot of My Folder Scructure
+
+![](./src/images/screencapture.png)
+
 ### How to run
 
 To run this project follow these steps
