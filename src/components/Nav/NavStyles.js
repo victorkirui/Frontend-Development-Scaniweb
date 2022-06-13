@@ -42,7 +42,7 @@ export const Select = styled.select`
   width: 114px;
   left: 1248px;
   top: 65px;
-
+  width: 68px;
   background: #ffffff;
 `;
 export const CartIcon = styled.div`
