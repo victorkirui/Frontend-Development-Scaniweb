@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BsCart2 } from "react-icons/bs";
-import { mobile } from "../../responsive";
-import { tablet } from "../../responsive";
+import { mobile } from "../../../responsive";
+import { tablet } from "../../../responsive";
 
 export const ContainerWrapper = styled.div`
   margin: auto;
@@ -27,7 +27,6 @@ export const CartIcon = styled(BsCart2)`
   opacity: 0;
   transition: all 0.8s ease-in;
   z-index: 99;
-  cursor: ${({ cursor }) => (cursor ? "pointer" : "not-allowed")};
 `;
 export const ItemWrapper = styled.div`
   position: relative;
@@ -64,7 +63,6 @@ export const ProductImage = styled.img`
   align-self: stretch;
   flex-grow: 0;
   user-select: none;
-  opacity: ${({ opacity }) => (opacity ? 1 : 0.4)};
 `;
 export const ProductName = styled.h3`
   line-height: 29px;
@@ -75,7 +73,6 @@ export const ProductName = styled.h3`
   color: #1d1f22;
   text-decoration: none;
   user-select: none;
-  opacity: ${({ opacity }) => (opacity ? 1 : 0.4)};
 `;
 export const Price = styled.p`
   margin: 0;
@@ -84,7 +81,6 @@ export const Price = styled.p`
   line-height: 29px;
   color: #1d1f22;
   user-select: none;
-  opacity: ${({ opacity }) => (opacity ? 1 : 0.4)};
 `;
 export const InStock = styled.div`
   position: absolute;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { mobile } from "../../responsive";
-import { tablet } from "../../responsive";
+import { mobile } from "../../../responsive";
+import { tablet } from "../../../responsive";
 
 export const CartContainer = styled.div`
   margin: auto;
@@ -42,7 +42,7 @@ export const Price = styled.div`
 `;
 export const AttributeName = styled(Sizes)`
   /* font-family: "Roboto Condensed"; */
-  margin: 7px 0px;
+  margin: 20px 0px 10px;
   ${mobile({ fontWeight: "500" })}
 `;
 
@@ -52,9 +52,9 @@ export const AttributeWrap = styled.div`
 `;
 export const AttributeValue = styled.div`
   margin-right: 8px;
-  padding: 15px;
+  padding: 15px 8px;
   border: 1px solid #1d1f22;
-  cursor: pointer;
+  ${"" /* cursor: pointer; */}
   display: flex;
   justify-content: center;
   align-items: center;
@@ -66,10 +66,15 @@ export const AttributeValue = styled.div`
   background: ${(props) => props.bg};
   user-select: none;
 
-  &:active {
+  ${
+    "" /* &:active {
     transform: translateY(1.3px);
+  } */
   }
   ${mobile({ padding: "7px" })}
+`;
+export const AttributeColor = styled(AttributeValue)`
+  padding: 10px 15px;
 `;
 
 export const RightContainer = styled.div`

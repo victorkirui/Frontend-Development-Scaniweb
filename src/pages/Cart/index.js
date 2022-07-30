@@ -1,11 +1,10 @@
 import React, { PureComponent } from "react";
-import CartItem from "../CartItem";
-import CartOrderComponent from "../CartOrderComponent";
+import CartItem from "./CartItem";
+import CartOrderComponent from "./CartOrderComponent";
+import { connect } from "react-redux";
 import { CartWrapper, Title, Count } from "./CartStyles";
 
-import { connect } from "react-redux";
-
-class Cart extends PureComponent {
+class index extends PureComponent {
   render() {
     const { cart } = this.props;
     return (
@@ -27,4 +26,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Cart);
+export default connect(mapStateToProps)(index);

@@ -1,5 +1,12 @@
 import * as actionTypes from "./shopping-types";
 
+export const fetchCategories = (data) => {
+  return {
+    type: actionTypes.FETCH_CATEGORIES,
+    payload: data,
+  };
+};
+
 export const fetchProducts = (products) => {
   return {
     type: actionTypes.FETCH_PRODUCTS,
@@ -7,10 +14,56 @@ export const fetchProducts = (products) => {
   };
 };
 
-export const fetchfilteredProducts = (filteredProducts) => {
+export const fetchCurrentCategoryName = (name) => {
   return {
-    type: actionTypes.FETCH_FILTERED_PRODUCTS,
-    payload: filteredProducts,
+    type: actionTypes.FETCH_CURRENT_CATEGORY_NAME,
+    payload: name,
+  };
+};
+
+export const fetchCurrencies = (currency) => {
+  return {
+    type: actionTypes.FETCH_CURRENCIES,
+    payload: currency,
+  };
+};
+
+export const changeCurrencySymbol = (symbol) => {
+  return {
+    type: actionTypes.CHANGE_CURRENCY_SYMBOL,
+    payload: symbol,
+  };
+};
+
+export const toggleCartOverlay = () => {
+  return {
+    type: actionTypes.TOGGLE_CART_OVERLAY,
+  };
+};
+
+export const closeCartOverlay = () => {
+  return {
+    type: actionTypes.CLOSE_CART_OVERLAY,
+  };
+};
+
+export const selectAttributes = (id, value) => {
+  return {
+    type: actionTypes.SELECTED_ATTRIBUTES,
+    payload: {
+      id,
+      value,
+    },
+  };
+};
+
+export const addToCart = (itemID, attributes) => {
+  return {
+    type: actionTypes.ADD_TO_CART,
+    payload: {
+      id: itemID,
+      attributes: attributes,
+    },
   };
 };
 
@@ -39,29 +92,6 @@ export const decrementQty = (itemID, value) => {
     payload: {
       id: itemID,
       qty: value,
-    },
-  };
-};
-
-export const toggleCartOverlay = () => {
-  return {
-    type: actionTypes.TOGGLE_CART_OVERLAY,
-  };
-};
-
-export const fetchCurrencies = (currency) => {
-  return {
-    type: actionTypes.FETCH_CURRENCIES,
-    payload: currency,
-  };
-};
-
-export const addToCart = (itemID, attributeValues) => {
-  return {
-    type: actionTypes.ADD_TO_CART,
-    payload: {
-      id: itemID,
-      attributes: attributeValues,
     },
   };
 };

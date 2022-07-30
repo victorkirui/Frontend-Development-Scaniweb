@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mobile } from "../../responsive";
+import { mobile } from "../../../responsive";
 
 export const Container = styled.div`
   width: 400px;
@@ -9,8 +9,10 @@ export const Container = styled.div`
   background: #fff;
   position: absolute;
   right: 0;
-  z-index: 9999999999;
+  z-index: 9999;
   ${mobile({ padding: "0px 20px" })}
+  max-height: 60vh;
+  overflow-y: scroll;
 `;
 export const Title = styled.h1`
   font-weight: 700;

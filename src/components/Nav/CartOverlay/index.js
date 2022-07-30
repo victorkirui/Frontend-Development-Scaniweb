@@ -1,11 +1,10 @@
 import React, { PureComponent } from "react";
 import CartOverlayItems from "../CartOverlayItems";
 import CartTotals from "../CartTotals";
+import { connect } from "react-redux";
 import { Container, Title } from "./CartOverlayStyles";
 
-import { connect } from "react-redux";
-
-class CartOverlay extends PureComponent {
+class index extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -39,16 +38,14 @@ class CartOverlay extends PureComponent {
       this.handleCount();
     }
   }
-
   render() {
-    const { cart } = this.props;
     return (
       <Container>
         <Title>My Bag: {this.state.cartCount} items</Title>
-        {cart.map((item) => (
-          <CartOverlayItems key={item.id} itemData={item}/>
+        {this.props.cart.map((item) => (
+          <CartOverlayItems key={item.id} itemData={item} />
         ))}
-        <CartTotals cartCount={this.state.cartCount}/>
+        <CartTotals cartCount={this.state.cartCount} />
       </Container>
     );
   }
@@ -60,4 +57,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(CartOverlay);
+export default connect(mapStateToProps)(index);

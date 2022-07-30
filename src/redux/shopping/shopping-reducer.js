@@ -1,26 +1,35 @@
 import * as actionTypes from "./shopping-types";
 
 const INITIAL_STATE = {
-  data: {},
-  filteredProducts: [],
-  cart: [],
-  currentItem: null,
+  categories: [],
+  productsData: [],
+  activeCategory: "All",
+  currencySymbol: "$",
   cartOverlayOpen: false,
+  cart: [],
+  selectedAttributes: [],
+  currentItem: null,
   currencyData: {},
 };
 
 const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case actionTypes.FETCH_CATEGORIES:
+      return {
+        ...state,
+        categories: action.payload,
+      };
+
     case actionTypes.FETCH_PRODUCTS:
       return {
         ...state,
-        data: action.payload,
+        productsData: action.payload,
       };
 
-    case actionTypes.FETCH_FILTERED_PRODUCTS:
+    case actionTypes.FETCH_CURRENT_CATEGORY_NAME:
       return {
         ...state,
-        filteredProducts: action.payload,
+        activeCategory: action.payload,
       };
 
     case actionTypes.FETCH_CURRENCIES:
@@ -29,9 +38,27 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         currencyData: action.payload,
       };
 
+    case actionTypes.CHANGE_CURRENCY_SYMBOL:
+      return {
+        ...state,
+        currencySymbol: action.payload,
+      };
+
+    case actionTypes.TOGGLE_CART_OVERLAY:
+      return {
+        ...state,
+        cartOverlayOpen: !state.cartOverlayOpen,
+      };
+
+    case actionTypes.CLOSE_CART_OVERLAY:
+      return {
+        ...state,
+        cartOverlayOpen: false,
+      };
+
     case actionTypes.ADD_TO_CART:
       // get items data from the products array
-      const item = state.filteredProducts?.find(
+      const item = state.productsData?.find(
         (item) => item.id === action.payload.id
       );
       // check if item is in the cart already
@@ -48,7 +75,11 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             )
           : [
               ...state.cart,
-              { ...item, qty: 1, attributes: action.payload.attributes },
+              {
+                ...item,
+                qty: 1,
+                attributes: action.payload.attributes,
+              },
             ],
       };
 
@@ -76,12 +107,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
             ? { ...item, qty: +action.payload.qty }
             : item
         ),
-      };
-
-    case actionTypes.TOGGLE_CART_OVERLAY:
-      return {
-        ...state,
-        cartOverlayOpen: !state.cartOverlayOpen,
       };
 
     case actionTypes.LOAD_CURRENT_ITEM:

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { mobile } from "../../responsive";
+import { mobile } from "../../../responsive";
 
 export const Container = styled.div``;
 export const TotalsWrapper = styled.div`

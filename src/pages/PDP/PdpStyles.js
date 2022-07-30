@@ -36,7 +36,7 @@ export const MiddleContainer = styled.div`
 `;
 export const MainImage = styled.img`
   width: 100%;
-  opacity: ${({ opacity }) => (opacity ? 1 : 0.5)};
+
   z-index: 1;
   ${tablet({ width: "90%", margin: "auto" })}
 `;
@@ -113,7 +113,6 @@ export const Button = styled.button`
   height: 52px;
   background: #5ece7b;
   color: #fff;
-  cursor: ${({ cursor }) => (cursor ? "pointer" : "not-allowed")};
 
   &:active {
     transform: translateY(2px);

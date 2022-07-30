@@ -1,176 +1,48 @@
 import React, { PureComponent } from "react";
-import "../../App.css";
+import { Link } from "react-router-dom";
 import Logo from "../../Logo.png";
-import CartOverlay from "../CartOverlay";
-import {
-  Container,
-  LinkItems,
-  LinkItem,
-  LogoContainer,
-  CartWrapper,
-  CurrencySymbol,
-  Select,
-  CartIcon,
-  BasketWrapper,
-  BasketIcon,
-} from "./NavStyles";
-
+import NavLinks from "./NavLinks";
+import Currencies from "./Currencies";
 import { connect } from "react-redux";
 import {
-  toggleCartOverlay,
-  fetchfilteredProducts,
-  fetchCurrencies,
+  fetchCurrentCategoryName,
+  closeCartOverlay,
 } from "../../redux/shopping/shopping-actions";
+import { Container } from "./NavStyles";
 
-// Query
-import gql from "graphql-tag";
-import { apolloClient } from "../../index";
-
-const GET_CURRENCIES = gql`
-  query {
-    currencies {
-      label
-      symbol
-    }
-  }
-`;
-
-class Nav extends PureComponent {
+class index extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.state = {
-      cartCount: 0,
-    };
-
-    this.handleCount = this.handleCount.bind(this);
+    this.state = {};
   }
 
-  componentDidMount = async () => {
-    const { fetchCurrencies } = this.props;
-
-    let res;
-    try {
-      res = await apolloClient.query({
-        query: GET_CURRENCIES,
-      });
-      this.handleCount();
-    } catch (error) {
-      console.log(error);
-    }
-    fetchCurrencies(res.data);
-  };
-
-  //UPDATING QTY
-  handleCount() {
-    let count = 0;
-
-    this.props.cart.forEach((item) => {
-      count += item.qty;
-    });
-
-    this.setState({
-      cartCount: count,
-    });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.props.cart !== prevProps.cart ||
-      this.state.cartCount !== prevState.cartCount
-    ) {
-      this.handleCount();
-    }
-  }
-
-  // FILTER PRODUCTS BY CATEGORY
-  filterResults = (categoryItem) => {
-    const filteredProduct = this.props.data.categories
-      ?.slice(0, 1)
-      .map((item) => {
-        return item.products?.filter((product) => {
-          return product.category === categoryItem;
-        });
-      });
-    this.props.fetchfilteredProducts(filteredProduct[0]);
-  };
-
-  filterAllResults = () => {
-    const clothes = this.props.data.categories?.slice(0, 1).map((item) => {
-      return item.products?.filter((product) => {
-        return product.category === "clothes";
-      });
-    });
-    const tech = this.props.data.categories?.slice(0, 1).map((item) => {
-      return item.products?.filter((product) => {
-        return product.category === "tech";
-      });
-    });
-    const children = clothes[0].concat(tech[0]);
-    this.props.fetchfilteredProducts(children);
+  handleClick = () => {
+    this.props.fetchCurrentCategoryName("All");
+    this.props.closeCartOverlay();
   };
 
   render() {
-    const { cartOverlayOpen, currencyData } = this.props;
     return (
       <Container>
-        <LinkItems>
-          <LinkItem to="/" onClick={() => this.filterAllResults()}>
-            All
-          </LinkItem>
-          <LinkItem to="/" onClick={() => this.filterResults("tech")}>
-            Tech
-          </LinkItem>
-          <LinkItem to="/" onClick={() => this.filterResults("clothes")}>
-            Clothes
-          </LinkItem>
-        </LinkItems>
-        <LogoContainer to="/" onClick={() => this.filterAllResults()}>
-          <img src={Logo} alt="Ecommerce Logo" />
-        </LogoContainer>
-        <CartWrapper>
-          <CurrencySymbol>
-            <Select>
-              {currencyData.currencies?.map((item, index) => {
-                return (
-                  <option key={index} value={item.symbol}>
-                    {item.symbol}
-                    {item.label}
-                  </option>
-                );
-              })}
-            </Select>
-          </CurrencySymbol>
-          <CartIcon>
-            <BasketWrapper onClick={() => this.props.toggleCartOverlay()}>
-              <BasketIcon />
-              <span>{this.state.cartCount}</span>
-            </BasketWrapper>
-            {cartOverlayOpen && <CartOverlay />}
-          </CartIcon>
-        </CartWrapper>
+        <NavLinks />
+
+        <Link to="/category/all" onClick={this.handleClick}>
+          <img src={Logo} alt="logo" />
+        </Link>
+
+        <Currencies />
       </Container>
     );
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    cartOverlayOpen: state.shop.cartOverlayOpen,
-    cart: state.shop.cart,
-    data: state.shop.data,
-    currencyData: state.shop.currencyData,
-    filteredProducts: state.shop.filteredProducts,
-  };
-};
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleCartOverlay: () => dispatch(toggleCartOverlay()),
-    fetchfilteredProducts: (someProducts) =>
-      dispatch(fetchfilteredProducts(someProducts)),
-    fetchCurrencies: (data) => dispatch(fetchCurrencies(data)),
+    fetchCurrentCategoryName: (name) =>
+      dispatch(fetchCurrentCategoryName(name)),
+    closeCartOverlay: () => dispatch(closeCartOverlay()),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Nav);
+export default connect(null, mapDispatchToProps)(index);

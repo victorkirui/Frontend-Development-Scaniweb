@@ -1,6 +1,5 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import styled from "styled-components";
-
 import { connect } from "react-redux";
 import { toggleCartOverlay } from "../../redux/shopping/shopping-actions";
 
@@ -10,18 +9,14 @@ const Container = styled.div`
   min-height: 100vh;
   content: "";
   background: rgba(0, 0, 0, 0.8);
-  z-index: 9999;
+  z-index: 999;
   opacity: 0.5;
   position: absolute;
   top: 0;
   left: 0;
 `;
 
-export class Overlay extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+export class Overlay extends PureComponent {
   render() {
     return (
       <Container onClick={() => this.props.toggleCartOverlay()}></Container>
@@ -31,7 +26,7 @@ export class Overlay extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    toggleCartOverlay: (data) => dispatch(toggleCartOverlay(data)),
+    toggleCartOverlay: () => dispatch(toggleCartOverlay()),
   };
 };
 

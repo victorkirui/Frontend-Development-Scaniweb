@@ -13,8 +13,48 @@ body {
   opacity: 0;
   transition-duration: 1s ease;
 }
-.slide.active {
+.slide.activeImg {
   opacity: 1;
   transition-duration: 1s;
   transform: scale(1.04);
+}
+
+.container {
+  margin: auto;
+  position: relative;
+}
+
+.content-wrapper {
+  max-width: 1440px;
+  margin: auto;
+  padding: 0px 10px;
+}
+
+.active {
+  color: #5ece7b !important;
+  border-bottom: 1px solid #5ece7b;
+}
+.active-option {
+  color: #fff !important;
+  background: #000;
+}
+.active-color {
+  border: 3px solid #5ece7b !important;
+}
+
+button:disabled,
+button[disabled] {
+  background-color: #cccccc;
+  color: #666666;
+}
+
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }

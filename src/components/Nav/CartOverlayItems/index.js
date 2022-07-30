@@ -1,4 +1,11 @@
 import React, { PureComponent } from "react";
+import { connect } from "react-redux";
+import {
+  incrementQty,
+  decrementQty,
+  removeFromCart,
+} from "../../../redux/shopping/shopping-actions";
+
 import {
   CartContainer,
   Container,
@@ -9,6 +16,7 @@ import {
   AttributeName,
   AttributeWrap,
   AttributeValue,
+  AttributeColor,
   RightContainer,
   CountContainer,
   Increment,
@@ -17,13 +25,6 @@ import {
   ImageContainer,
   Image,
 } from "./CartOverlayItemsStyles";
-
-import { connect } from "react-redux";
-import {
-  incrementQty,
-  decrementQty,
-  removeFromCart,
-} from "../../redux/shopping/shopping-actions";
 
 class CartOverlay extends PureComponent {
   constructor(props) {
@@ -75,23 +76,35 @@ class CartOverlay extends PureComponent {
             <Brand>{itemData.brand}</Brand>
             <Name>{itemData.name}</Name>
             <Price>
-              {itemData.prices[0].currency.symbol}
-              {itemData.prices[0].amount}
+              {this.props.currencySymbol}{" "}
+              {itemData.prices?.map((price) => (
+                <React.Fragment key={price.symbol}>
+                  {price.currency.symbol === this.props.currencySymbol && (
+                    <>{price.amount}</>
+                  )}
+                </React.Fragment>
+              ))}
             </Price>
 
-            {itemData.attributes?.map((item,index) =>
+            {itemData.attributes?.map((item, index) =>
               item ? (
                 <React.Fragment key={index}>
-                  <AttributeName>{Object.keys(item)}</AttributeName>
+                  <AttributeName>{item.id}</AttributeName>
                   <AttributeWrap>
-                        <AttributeValue bg={item.value}>
-                          {Object.values(item)}
-                        </AttributeValue>
+                    {item.id === "Color" ? (
+                      <AttributeColor
+                        bg={item.value}
+                        className="active-color"
+                      />
+                    ) : (
+                      <AttributeValue className="active-option">
+                        {item.value}
+                      </AttributeValue>
+                    )}
                   </AttributeWrap>
                 </React.Fragment>
               ) : null
             )}
-            
           </LeftContainer>
           <RightContainer>
             <CountContainer>
@@ -113,6 +126,13 @@ class CartOverlay extends PureComponent {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    currencySymbol: state.shop.currencySymbol,
+    cart: state.shop.cart,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     incrementQty: (id, value) => dispatch(incrementQty(id, value)),
@@ -121,4 +141,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(CartOverlay);
+export default connect(mapStateToProps, mapDispatchToProps)(CartOverlay);

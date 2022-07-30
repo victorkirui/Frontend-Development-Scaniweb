@@ -10,7 +10,7 @@ import {
 } from "./CartTotalsStyles";
 
 import { connect } from "react-redux";
-import { toggleCartOverlay } from "../../redux/shopping/shopping-actions";
+import { toggleCartOverlay } from "../../../redux/shopping/shopping-actions";
 
 class CartTotals extends PureComponent {
   constructor(props) {
@@ -19,24 +19,28 @@ class CartTotals extends PureComponent {
       totalItems: 0,
       totalPrice: 0,
     };
-    this.handleToggleCart = this.handleToggleCart.bind(this);
-    this.handleTotals = this.handleTotals.bind(this);
   }
 
-  handleTotals() {
+  handleTotals = () => {
     let items = 0;
     let price = 0;
 
     this.props.cart.forEach((item) => {
       items += item.qty;
-      price += item.qty * item.prices[0].amount;
+
+      item.prices.map((itemPrice) => {
+        if (itemPrice.currency.symbol === this.props.currencySymbol) {
+          price += item.qty * itemPrice.amount;
+        }
+        return price;
+      });
     });
 
     this.setState({
       totalItems: items,
       totalPrice: price,
     });
-  }
+  };
 
   componentDidMount() {
     this.handleTotals();
@@ -44,6 +48,7 @@ class CartTotals extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (
+      this.props.currencySymbol !== prevProps.currencySymbol ||
       this.props.cart !== prevProps.cart ||
       this.state.totalItems !== prevState.totalItems ||
       this.state.totalPrice !== prevState.totalPrice
@@ -52,25 +57,21 @@ class CartTotals extends PureComponent {
     }
   }
 
-  handleToggleCart() {
-    this.props.toggleCartOverlay();
-  }
-
   render() {
     const { totalPrice } = this.state;
     return (
       <Container>
         <TotalsWrapper>
           <Total>Total</Total>
-          <TotalAmount>${totalPrice.toFixed(2)}</TotalAmount>
+          <TotalAmount>
+            {this.props.currencySymbol} {totalPrice.toFixed(2)}
+          </TotalAmount>
         </TotalsWrapper>
         <ButtonsWrapper>
-          <ViewBagBtn to="/cart" onClick={this.handleToggleCart}>
+          <ViewBagBtn to="/cart" onClick={() => this.props.toggleCartOverlay()}>
             View Bag
           </ViewBagBtn>
-          <CheckoutBtn to="#" onClick={this.handleToggleCart}>
-            Checkout
-          </CheckoutBtn>
+          <CheckoutBtn to="#">Checkout</CheckoutBtn>
         </ButtonsWrapper>
       </Container>
     );
@@ -80,6 +81,7 @@ class CartTotals extends PureComponent {
 const mapStateToProps = (state) => {
   return {
     cart: state.shop.cart,
+    currencySymbol: state.shop.currencySymbol,
   };
 };
 

@@ -21,24 +21,28 @@ class CartOrderComponent extends PureComponent {
       totalItems: 0,
       totalPrice: 0,
     };
-    
-    this.handleTotals = this.handleTotals.bind(this);
   }
 
-  handleTotals() {
+  handleTotals = () => {
     let items = 0;
     let price = 0;
 
     this.props.cart.forEach((item) => {
       items += item.qty;
-      price += item.qty * item.prices[0].amount;
+
+      item.prices.map((itemPrice) => {
+        if (itemPrice.currency.symbol === this.props.currencySymbol) {
+          price += item.qty * itemPrice.amount;
+        }
+        return price;
+      });
     });
 
     this.setState({
       totalItems: items,
       totalPrice: price,
     });
-  }
+  };
 
   componentDidMount() {
     this.handleTotals();
@@ -46,6 +50,7 @@ class CartOrderComponent extends PureComponent {
 
   componentDidUpdate(prevProps, prevState) {
     if (
+      this.props.currencySymbol !== prevProps.currencySymbol ||
       this.props.cart !== prevProps.cart ||
       this.state.totalItems !== prevState.totalItems ||
       this.state.totalPrice !== prevState.totalPrice
@@ -56,17 +61,23 @@ class CartOrderComponent extends PureComponent {
 
   render() {
     const { totalItems, totalPrice } = this.state;
+    const { currencySymbol } = this.props;
     return (
       <Container>
         <Tax>
           <Title>Tax 21%:</Title>{" "}
-          <TotalTax>${(totalPrice * 0.21).toFixed(2)}</TotalTax>
+          <TotalTax>
+            {currencySymbol} {(totalPrice * 0.21).toFixed(2)}
+          </TotalTax>
         </Tax>
         <Quantity>
           <Title>Quantity:</Title> <Value>{totalItems}</Value>
         </Quantity>
         <Total>
-          <Title>Total:</Title> <Amount>${totalPrice.toFixed(2)}</Amount>
+          <Title>Total:</Title>{" "}
+          <Amount>
+            {currencySymbol} {totalPrice.toFixed(2)}
+          </Amount>
         </Total>
         <OrderBtn>ORDER</OrderBtn>
       </Container>
@@ -77,6 +88,7 @@ class CartOrderComponent extends PureComponent {
 const mapStateToProps = (state) => {
   return {
     cart: state.shop.cart,
+    currencySymbol: state.shop.currencySymbol,
   };
 };
 

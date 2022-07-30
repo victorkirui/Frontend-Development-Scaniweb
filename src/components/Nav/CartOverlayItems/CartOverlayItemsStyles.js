@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { mobile } from "../../responsive";
+import { mobile } from "../../../responsive";
 
 export const CartContainer = styled.div`
   max-width: 400px;
@@ -40,12 +40,15 @@ export const AttributeValue = styled.div`
   font-size: 14px;
   padding: 5px;
   border: 1px solid #1d1f22;
-  cursor: pointer;
+  ${"" /* cursor: pointer; */}
   display: flex;
   justify-content: center;
   align-items: center;
   background: ${(props) => props.bg};
   user-select: none;
+`;
+export const AttributeColor = styled(AttributeValue)`
+  padding: 10px;
 `;
 
 export const RightContainer = styled.div`
