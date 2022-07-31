@@ -115,7 +115,15 @@ export class index extends PureComponent {
               <CartIcon>
                 <BasketWrapper onClick={() => this.props.toggleCartOverlay()}>
                   <BasketIcon />
-                  <span>{this.state.cartCount}</span>
+                  <span
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {this.state.cartCount}
+                  </span>
                 </BasketWrapper>
                 {this.props.cartOverlayOpen && <CartOverlay />}
               </CartIcon>
