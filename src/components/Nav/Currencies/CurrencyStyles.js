@@ -42,7 +42,7 @@ export const CurrencySwitchWrapper = styled.div`
   margin-top: 10px;
   margin-left: -30px;
   box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
-  z-index: 999;
+  z-index: 99999;
 `;
 export const Select = styled.select`
   border: none;
