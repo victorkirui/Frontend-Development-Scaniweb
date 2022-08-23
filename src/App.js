@@ -7,7 +7,7 @@ import Products from "./pages/Products";
 import PDP from "./pages/PDP";
 import Cart from "./pages/Cart";
 import Nav from "./components/Nav";
-import Overlay from "./components/overlay/Overlay";
+import Overlay from "./components/Overlay/Overlay";
 
 function App(props) {
   return (
