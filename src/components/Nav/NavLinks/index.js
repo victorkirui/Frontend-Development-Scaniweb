@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react";
 import { withRouter } from "react-router-dom";
+import { LinkItems, LinkItem } from "./NavLinkStyles";
 
 // State
 import { connect } from "react-redux";
@@ -8,8 +9,6 @@ import {
   fetchCurrentCategoryName,
   closeCartOverlay,
 } from "../../../redux/shopping/shopping-actions";
-
-import { LinkItems, LinkItem } from "./NavLinkStyles";
 
 import { gql } from "@apollo/client";
 import { Query } from "@apollo/client/react/components";
@@ -36,7 +35,6 @@ class index extends PureComponent {
           if (loading) return <h4>Loading...</h4>;
           if (error) console.log(error);
 
-          //Setting categories data to REDUX
           data && fetchCategories(data.categories);
 
           return (

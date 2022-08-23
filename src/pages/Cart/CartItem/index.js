@@ -25,7 +25,7 @@ import {
 import { connect } from "react-redux";
 import {
   changeProductQuantity,
-  changeProductAttributeInCart,
+  changeProductAttributeFromCart,
 } from "../../../redux/shopping/shopping-actions";
 
 class index extends PureComponent {
@@ -48,7 +48,7 @@ class index extends PureComponent {
 
   handleAttributeChange = (index, id, value, e) => {
     e.stopPropagation();
-    this.props.changeProductAttributeInCart(index, id, value);
+    this.props.changeProductAttributeFromCart(index, id, value);
   };
 
   // Thumbnail Image sliders functionality
@@ -192,8 +192,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     changeProductQuantity: (index, type) =>
       dispatch(changeProductQuantity(index, type)),
-    changeProductAttributeInCart: (index, id, value) =>
-      dispatch(changeProductAttributeInCart(index, id, value)),
+    changeProductAttributeFromCart: (index, id, value) =>
+      dispatch(changeProductAttributeFromCart(index, id, value)),
   };
 };
 

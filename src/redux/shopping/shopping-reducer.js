@@ -13,109 +13,6 @@ const INITIAL_STATE = {
 
 const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case actionTypes.ADD_PRODUCT_TO_CART:
-      return {
-        ...state,
-        cart: [...state.cart].some(
-          (el) =>
-            JSON.stringify(el.attributes) ===
-            JSON.stringify(action.payload.attributes)
-        )
-          ? [...state.cart].reduce(
-              (previousValue, currentValue) =>
-                JSON.stringify(currentValue.attributes) ===
-                JSON.stringify(action.payload.attributes)
-                  ? [
-                      ...previousValue,
-                      {
-                        ...currentValue,
-                        qty: currentValue.qty + 1,
-                      },
-                    ]
-                  : [...previousValue, currentValue],
-              []
-            )
-          : [
-              ...state.cart,
-              {
-                ...action.payload,
-                qty: 1,
-              },
-            ],
-      };
-
-    case actionTypes.LOAD_CURRENT_ITEM:
-      return {
-        ...state,
-        currentItem: action.payload,
-      };
-
-    case actionTypes.CHANGE_PRODUCT_ATTRIBUTE:
-      const { id, val } = action.payload;
-
-      return {
-        ...state,
-        currentItem: {
-          ...state.currentItem,
-          attributes: [...state.currentItem.attributes].map((attr) =>
-            attr.id === id
-              ? {
-                  ...attr,
-                  items: [...attr.items].map((attr) =>
-                    attr.value === val
-                      ? {
-                          ...attr,
-                          selected: true,
-                        }
-                      : {
-                          ...attr,
-                          selected: false,
-                        }
-                  ),
-                }
-              : {
-                  ...attr,
-                  items: [...attr.items],
-                }
-          ),
-        },
-      };
-
-    case actionTypes.CHANGE_PRODUCT_ATTRIBUTE_IN_CART:
-      const { attrType, value } = action;
-      return {
-        ...state,
-        cart: [...state.cart].map((product, index) => {
-          if (index === action.index) {
-            return {
-              ...product,
-              attributes: [...product.attributes].map((attr) =>
-                attr.id === attrType
-                  ? {
-                      ...attr,
-                      items: [...attr.items].map((attr) =>
-                        attr.value === value
-                          ? {
-                              ...attr,
-                              selected: true,
-                            }
-                          : {
-                              ...attr,
-                              selected: false,
-                            }
-                      ),
-                    }
-                  : {
-                      ...attr,
-                      items: [...attr.items],
-                    }
-              ),
-            };
-          }
-          return product;
-        }),
-      };
-
     case actionTypes.FETCH_CATEGORIES:
       return {
         ...state,
@@ -158,6 +55,109 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         cartOverlayOpen: false,
       };
 
+    case actionTypes.LOAD_CURRENT_ITEM:
+      return {
+        ...state,
+        currentItem: action.payload,
+      };
+
+    case actionTypes.ADD_PRODUCT_TO_CART:
+      return {
+        ...state,
+        cart: [...state.cart].some(
+          (item) =>
+            JSON.stringify(item.attributes) ===
+            JSON.stringify(action.payload.attributes)
+        )
+          ? [...state.cart].reduce(
+              (previousValue, currentValue) =>
+                JSON.stringify(currentValue.attributes) ===
+                JSON.stringify(action.payload.attributes)
+                  ? [
+                      ...previousValue,
+                      {
+                        ...currentValue,
+                        qty: currentValue.qty + 1,
+                      },
+                    ]
+                  : [...previousValue, currentValue],
+              []
+            )
+          : [
+              ...state.cart,
+              {
+                ...action.payload,
+                qty: 1,
+              },
+            ],
+      };
+
+    case actionTypes.CHANGE_PRODUCT_ATTRIBUTE:
+      const { id, val } = action.payload;
+
+      return {
+        ...state,
+        currentItem: {
+          ...state.currentItem,
+          attributes: [...state.currentItem.attributes].map((attr) =>
+            attr.id === id
+              ? {
+                  ...attr,
+                  items: [...attr.items].map((attr) =>
+                    attr.value === val
+                      ? {
+                          ...attr,
+                          selected: true,
+                        }
+                      : {
+                          ...attr,
+                          selected: false,
+                        }
+                  ),
+                }
+              : {
+                  ...attr,
+                  items: [...attr.items],
+                }
+          ),
+        },
+      };
+
+    case actionTypes.CHANGE_PRODUCT_ATTRIBUTE_FROM_CART:
+      const { attrType, value } = action;
+      return {
+        ...state,
+        cart: [...state.cart].map((product, index) => {
+          if (index === action.index) {
+            return {
+              ...product,
+              attributes: [...product.attributes].map((attr) =>
+                attr.id === attrType
+                  ? {
+                      ...attr,
+                      items: [...attr.items].map((attr) =>
+                        attr.value === value
+                          ? {
+                              ...attr,
+                              selected: true,
+                            }
+                          : {
+                              ...attr,
+                              selected: false,
+                            }
+                      ),
+                    }
+                  : {
+                      ...attr,
+                      items: [...attr.items],
+                    }
+              ),
+            };
+          }
+          return product;
+        }),
+      };
+
     case actionTypes.CHANGE_PRODUCT_QUANITY:
       if (action.val === "increment") {
         return {
@@ -190,14 +190,6 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         };
       }
       return state;
-
-    case actionTypes.REMOVE_FROM_CART:
-      return {
-        ...state,
-        cart: [...state.cart].filter(
-          (el, index) => index !== action.payload.index
-        ),
-      };
 
     default:
       return state;
