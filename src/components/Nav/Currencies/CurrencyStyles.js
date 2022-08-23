@@ -38,9 +38,8 @@ export const CurrencySymbol = styled.div`
 export const CurrencySwitchWrapper = styled.div`
   position: absolute;
   width: 115px;
-
-  margin-top: 10px;
-  margin-left: -30px;
+  margin-top: 20px;
+  margin-left: -47px;
   box-shadow: 0px 4px 35px rgba(168, 172, 176, 0.19);
   z-index: 99999;
 `;
