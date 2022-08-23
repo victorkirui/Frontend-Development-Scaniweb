@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import CartOverlayItems from "../CartOverlayItems";
+import CartOverlayItem from "../CartOverlayItem";
 import CartTotals from "../CartTotals";
 import { connect } from "react-redux";
 import { Container, Title } from "./CartOverlayStyles";
@@ -42,8 +42,8 @@ class index extends PureComponent {
     return (
       <Container>
         <Title>My Bag: {this.state.cartCount} items</Title>
-        {this.props.cart.map((item) => (
-          <CartOverlayItems key={item.id} itemData={item} />
+        {this.props.cart.map((item, index) => (
+          <CartOverlayItem key={index} itemData={item} index={index} />
         ))}
         <CartTotals cartCount={this.state.cartCount} />
       </Container>

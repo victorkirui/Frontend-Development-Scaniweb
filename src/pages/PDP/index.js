@@ -1,7 +1,10 @@
 import React, { PureComponent } from "react";
 import { withRouter } from "react-router-dom";
 import { Interweave } from "interweave";
-import { addToCart } from "../../redux/shopping/shopping-actions";
+import {
+  addProductToCart,
+  changeProductAttribute,
+} from "../../redux/shopping/shopping-actions";
 import { GrCircleInformation } from "react-icons/gr";
 
 import {
@@ -64,28 +67,9 @@ class index extends PureComponent {
 
     this.state = {
       active: 0,
-      selectedOptions: [],
-      productObject: {},
       error: false,
     };
   }
-
-  handleOptions = (id, value) => {
-    const exist = this.state.selectedOptions.find((option) => option.id === id);
-    if (exist) {
-      this.setState((state) => ({
-        ...state,
-        selectedOptions: this.state.selectedOptions.map((item) =>
-          item.id === id ? { ...exist, value } : item
-        ),
-      }));
-    } else {
-      this.setState((state) => ({
-        ...state,
-        selectedOptions: [...this.state.selectedOptions, { id, value }],
-      }));
-    }
-  };
 
   handleIndexClick = (event) => {
     this.setState({
@@ -93,32 +77,33 @@ class index extends PureComponent {
     });
   };
 
-  handleAddToCart = (id, options) => {
-    const AttributesLength = this.state.productObject.product.attributes.length;
-
-    if (
-      (this.state.selectedOptions.length &&
-        this.state.selectedOptions.length === AttributesLength) ||
-      AttributesLength === 0
-    ) {
-      this.setState({
-        error: false,
-      });
-      this.props.addToCart(id, options);
-    } else {
-      this.setState({
-        error: true,
-      });
-      setTimeout(() => {
-        this.setState({
-          error: false,
-        });
-      }, 3000);
-    }
-  };
-
   render() {
     const { active } = this.state;
+    const { currentItem, changeProductAttribute, addProductToCart } =
+      this.props;
+
+    const isValidAttributes =
+      currentItem &&
+      currentItem.attributes.reduce(
+        (acc, val) => (val.items.every((item) => !item.selected) ? false : acc),
+        true
+      );
+
+    const handleAddToCart = () => {
+      if (isValidAttributes) {
+        addProductToCart(currentItem);
+      } else {
+        this.setState({
+          error: true,
+        });
+        setTimeout(() => {
+          this.setState({
+            error: false,
+          });
+        }, 3000);
+      }
+    };
+
     return (
       <Query
         query={GET_PRODUCT}
@@ -128,15 +113,11 @@ class index extends PureComponent {
           if (loading) return <h4>Loading...</h4>;
           if (error) console.log(error);
 
-          this.setState({
-            productObject: data,
-          });
-
           return (
             <PDPContainer>
               <Container>
                 <LeftContainer>
-                  {data.product.gallery?.map((image, index) => {
+                  {currentItem.gallery?.map((image, index) => {
                     return (
                       <ProductImage
                         key={index}
@@ -151,47 +132,44 @@ class index extends PureComponent {
                 </LeftContainer>
                 <MiddleContainer>
                   <MainImage
-                    src={data.product.gallery[active]}
+                    src={currentItem.gallery[active]}
                     alt="main image"
                     style={
-                      data.product.inStock ? { opacity: 1 } : { opacity: 0.4 }
+                      currentItem.inStock ? { opacity: 1 } : { opacity: 0.4 }
                     }
                   />
-                  {data.product.inStock ? " " : <InStock>OUT OF STOCK</InStock>}
+                  {currentItem.inStock ? " " : <InStock>OUT OF STOCK</InStock>}
                 </MiddleContainer>
                 <RightContainer>
-                  <Brand>{data.product.brand}</Brand>
-                  <Name>{data.product.name}</Name>
+                  <Brand>{currentItem.brand}</Brand>
+                  <Name>{currentItem.name}</Name>
 
-                  {data.product.attributes.map((attribute) => (
+                  {currentItem.attributes.map((attribute) => (
                     <AttributeName key={attribute.id}>
                       <React.Fragment>{attribute.name}:</React.Fragment>
                       <br />
                       {attribute.items.map((item) => {
-                        const selectedItem = this.state.selectedOptions.find(
-                          (option) =>
-                            option.id === attribute.id &&
-                            option.value === item.value
-                        );
                         return attribute.type === "swatch" ? (
                           <AttributeValue
                             bg={item.value}
                             key={item.id}
                             onClick={() =>
-                              this.handleOptions(attribute.id, item.value)
+                              currentItem.inStock &&
+                              changeProductAttribute(attribute.id, item.value)
                             }
                             className={
-                              selectedItem ? "active-color" : undefined
+                              item.selected ? "active-color" : undefined
                             }
                           ></AttributeValue>
                         ) : (
                           <AttributeValue
                             key={item.id}
                             className={
-                              selectedItem ? "active-option" : undefined
+                              item.selected ? "active-option" : undefined
                             }
                             onClick={() =>
-                              this.handleOptions(attribute.id, item.value)
+                              currentItem.inStock &&
+                              changeProductAttribute(attribute.id, item.value)
                             }
                           >
                             {item.value}
@@ -205,7 +183,7 @@ class index extends PureComponent {
                     <PriceLabel>PRICE:</PriceLabel>
                     <Amount>
                       {this.props.currencySymbol}{" "}
-                      {data.product.prices?.map((price) => (
+                      {currentItem.prices?.map((price) => (
                         <React.Fragment key={price.symbol}>
                           {price.currency.symbol ===
                             this.props.currencySymbol && <>{price.amount}</>}
@@ -228,16 +206,11 @@ class index extends PureComponent {
                       Please select all options to add to cart
                     </span>
                   )}
-                  {data.product.inStock ? (
+                  {currentItem.inStock ? (
                     <Button
-                      onClick={() =>
-                        this.handleAddToCart(
-                          data.product.id,
-                          this.state.selectedOptions
-                        )
-                      }
+                      onClick={handleAddToCart}
                       style={
-                        data.product.inStock
+                        currentItem.inStock
                           ? { cursor: "pointer" }
                           : { cursor: "not-allowed" }
                       }
@@ -247,14 +220,8 @@ class index extends PureComponent {
                   ) : (
                     <Button
                       disabled
-                      onClick={() =>
-                        this.handleAddToCart(
-                          data.product.id,
-                          this.state.selectedOptions
-                        )
-                      }
                       style={
-                        data.product.inStock
+                        currentItem.inStock
                           ? { cursor: "pointer" }
                           : { cursor: "not-allowed" }
                       }
@@ -264,7 +231,7 @@ class index extends PureComponent {
                   )}
 
                   <Desc>
-                    <Interweave content={data.product.description} />
+                    <Interweave content={currentItem.description} />
                   </Desc>
                 </RightContainer>
               </Container>
@@ -279,12 +246,15 @@ class index extends PureComponent {
 const mapStateToProps = (state) => {
   return {
     currencySymbol: state.shop.currencySymbol,
+    currentItem: state.shop.currentItem,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addToCart: (id, attributes) => dispatch(addToCart(id, attributes)),
+    addProductToCart: (currentItem) => dispatch(addProductToCart(currentItem)),
+    changeProductAttribute: (id, val) =>
+      dispatch(changeProductAttribute(id, val)),
   };
 };
 

@@ -1,5 +1,10 @@
 import React, { PureComponent } from "react";
-import "../../../App.css";
+import { connect } from "react-redux";
+import {
+  changeProductQuantity,
+  changeProductAttributeInCart,
+} from "../../../redux/shopping/shopping-actions";
+
 import {
   CartContainer,
   Container,
@@ -17,27 +22,18 @@ import {
   Count,
   Decrement,
   ImageContainer,
-  ImageContent,
-  LeftArrow,
-  RightArrow,
-} from "./CartItemStyles";
+  Image,
+} from "./CartOverlayItemsStyles";
 
-import { connect } from "react-redux";
-import {
-  changeProductQuantity,
-  changeProductAttributeInCart,
-} from "../../../redux/shopping/shopping-actions";
-
-class index extends PureComponent {
+class CartOverlay extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      current: 0,
+      cartCount: 0,
+      itemCount: this.props.itemData.qty,
     };
 
-    this.handleNextSlide = this.handleNextSlide.bind(this);
-    this.handlePrevSlide = this.handlePrevSlide.bind(this);
     this.handleQuantityChange = this.handleQuantityChange.bind(this);
   }
 
@@ -50,25 +46,6 @@ class index extends PureComponent {
     e.stopPropagation();
     this.props.changeProductAttributeInCart(index, id, value);
   };
-
-  // Thumbnail Image sliders functionality
-  handleNextSlide() {
-    this.setState({
-      current:
-        this.state.current === this.props.itemData.gallery.length - 1
-          ? 0
-          : this.state.current + 1,
-    });
-  }
-
-  handlePrevSlide() {
-    this.setState({
-      current:
-        this.state.current === 0
-          ? this.props.itemData.gallery.length - 1
-          : this.state.current - 1,
-    });
-  }
 
   render() {
     const { itemData, index } = this.props;
@@ -154,26 +131,7 @@ class index extends PureComponent {
               </Decrement>
             </CountContainer>
             <ImageContainer>
-              {itemData.gallery?.map((item, index) => {
-                return (
-                  <div
-                    className={
-                      index === this.state.current ? "slide activeImg" : "slide"
-                    }
-                    key={index}
-                  >
-                    {index === this.state.current && (
-                      <ImageContent src={item} alt={item.name} />
-                    )}
-                  </div>
-                );
-              })}
-              {itemData.gallery.length > 1 && (
-                <>
-                  <LeftArrow onClick={this.handlePrevSlide} />
-                  <RightArrow onClick={this.handleNextSlide} />
-                </>
-              )}
+              <Image src={itemData.gallery[0]} alt={itemData.name} />
             </ImageContainer>
           </RightContainer>
         </Container>
@@ -197,4 +155,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(index);
+export default connect(mapStateToProps, mapDispatchToProps)(CartOverlay);

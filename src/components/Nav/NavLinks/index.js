@@ -29,6 +29,7 @@ class index extends PureComponent {
   };
 
   render() {
+    const { categories, fetchCategories } = this.props;
     return (
       <Query query={GET_CATEGORIES}>
         {({ loading, error, data }) => {
@@ -36,11 +37,11 @@ class index extends PureComponent {
           if (error) console.log(error);
 
           //Setting categories data to REDUX
-          this.props.fetchCategories(data.categories);
+          data && fetchCategories(data.categories);
 
           return (
             <LinkItems>
-              {data.categories.map((item) => (
+              {categories.map((item) => (
                 <LinkItem
                   key={item.name}
                   to={`/category/${item.name}`}
@@ -57,6 +58,11 @@ class index extends PureComponent {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    categories: state.shop.categories,
+  };
+};
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchCategories: (data) => dispatch(fetchCategories(data)),
@@ -66,4 +72,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(withRouter(index));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(index));

@@ -5,7 +5,6 @@ import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { connect } from "react-redux";
 import {
   fetchCurrencies,
-  changeCurrencySymbol,
   toggleCartOverlay,
 } from "../../../redux/shopping/shopping-actions";
 
@@ -74,13 +73,20 @@ export class index extends PureComponent {
   };
 
   render() {
+    const {
+      currencies,
+      currencySymbol,
+      fetchCurrencies,
+      toggleCartOverlay,
+      cartOverlayOpen,
+    } = this.props;
     return (
       <Query query={GET_CURRENCIES}>
         {({ loading, error, data }) => {
           if (loading) return <h4>Loading...</h4>;
           if (error) console.log(error);
 
-          this.props.fetchCurrencies(data.currencies);
+          data && fetchCurrencies(data.currencies);
 
           return (
             <CartWrapper>
@@ -93,7 +99,7 @@ export class index extends PureComponent {
                   }}
                   onClick={this.handleShow}
                 >
-                  {this.props.currencySymbol}
+                  {currencySymbol}
                   {this.state.show ? (
                     <BsChevronUp style={{ marginLeft: "6px" }} />
                   ) : (
@@ -102,7 +108,7 @@ export class index extends PureComponent {
                 </span>
 
                 <CurrencySwitchWrapper className="currencySwitchWrapper">
-                  {data.currencies?.map((item) => (
+                  {currencies?.map((item) => (
                     <CurrencySwitcher
                       key={item.label}
                       item={item}
@@ -113,7 +119,7 @@ export class index extends PureComponent {
                 </CurrencySwitchWrapper>
               </CurrencySymbol>
               <CartIcon>
-                <BasketWrapper onClick={() => this.props.toggleCartOverlay()}>
+                <BasketWrapper onClick={() => toggleCartOverlay()}>
                   <BasketIcon />
                   <span
                     style={{
@@ -125,7 +131,7 @@ export class index extends PureComponent {
                     {this.state.cartCount}
                   </span>
                 </BasketWrapper>
-                {this.props.cartOverlayOpen && <CartOverlay />}
+                {cartOverlayOpen && <CartOverlay />}
               </CartIcon>
             </CartWrapper>
           );
@@ -137,6 +143,7 @@ export class index extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
+    currencies: state.shop.currencies,
     currencySymbol: state.shop.currencySymbol,
     cartOverlayOpen: state.shop.cartOverlayOpen,
     cart: state.shop.cart,
@@ -146,7 +153,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchCurrencies: (currencies) => dispatch(fetchCurrencies(currencies)),
-    changeCurrencySymbol: (symbol) => dispatch(changeCurrencySymbol(symbol)),
     toggleCartOverlay: () => dispatch(toggleCartOverlay()),
   };
 };

@@ -11,8 +11,8 @@ class index extends PureComponent {
       <CartWrapper>
         <Title>Cart</Title>
         {cart.length === 0 && <Count>You have No Items in your cart</Count>}
-        {cart.map((item) => (
-          <CartItem key={item.id} itemData={item} />
+        {cart.map((item, index) => (
+          <CartItem key={index} itemData={item} index={index} />
         ))}
         <CartOrderComponent />
       </CartWrapper>

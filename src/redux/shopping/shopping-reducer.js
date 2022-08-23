@@ -2,18 +2,120 @@ import * as actionTypes from "./shopping-types";
 
 const INITIAL_STATE = {
   categories: [],
-  productsData: [],
   activeCategory: "All",
+  currencies: [],
   currencySymbol: "$",
   cartOverlayOpen: false,
+  productsData: [],
+  currentItem: {},
   cart: [],
-  selectedAttributes: [],
-  currentItem: null,
-  currencyData: {},
 };
 
 const shopReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case actionTypes.ADD_PRODUCT_TO_CART:
+      return {
+        ...state,
+        cart: [...state.cart].some(
+          (el) =>
+            JSON.stringify(el.attributes) ===
+            JSON.stringify(action.payload.attributes)
+        )
+          ? [...state.cart].reduce(
+              (previousValue, currentValue) =>
+                JSON.stringify(currentValue.attributes) ===
+                JSON.stringify(action.payload.attributes)
+                  ? [
+                      ...previousValue,
+                      {
+                        ...currentValue,
+                        qty: currentValue.qty + 1,
+                      },
+                    ]
+                  : [...previousValue, currentValue],
+              []
+            )
+          : [
+              ...state.cart,
+              {
+                ...action.payload,
+                qty: 1,
+              },
+            ],
+      };
+
+    case actionTypes.LOAD_CURRENT_ITEM:
+      return {
+        ...state,
+        currentItem: action.payload,
+      };
+
+    case actionTypes.CHANGE_PRODUCT_ATTRIBUTE:
+      const { id, val } = action.payload;
+
+      return {
+        ...state,
+        currentItem: {
+          ...state.currentItem,
+          attributes: [...state.currentItem.attributes].map((attr) =>
+            attr.id === id
+              ? {
+                  ...attr,
+                  items: [...attr.items].map((attr) =>
+                    attr.value === val
+                      ? {
+                          ...attr,
+                          selected: true,
+                        }
+                      : {
+                          ...attr,
+                          selected: false,
+                        }
+                  ),
+                }
+              : {
+                  ...attr,
+                  items: [...attr.items],
+                }
+          ),
+        },
+      };
+
+    case actionTypes.CHANGE_PRODUCT_ATTRIBUTE_IN_CART:
+      const { attrType, value } = action;
+      return {
+        ...state,
+        cart: [...state.cart].map((product, index) => {
+          if (index === action.index) {
+            return {
+              ...product,
+              attributes: [...product.attributes].map((attr) =>
+                attr.id === attrType
+                  ? {
+                      ...attr,
+                      items: [...attr.items].map((attr) =>
+                        attr.value === value
+                          ? {
+                              ...attr,
+                              selected: true,
+                            }
+                          : {
+                              ...attr,
+                              selected: false,
+                            }
+                      ),
+                    }
+                  : {
+                      ...attr,
+                      items: [...attr.items],
+                    }
+              ),
+            };
+          }
+          return product;
+        }),
+      };
+
     case actionTypes.FETCH_CATEGORIES:
       return {
         ...state,
@@ -35,7 +137,7 @@ const shopReducer = (state = INITIAL_STATE, action) => {
     case actionTypes.FETCH_CURRENCIES:
       return {
         ...state,
-        currencyData: action.payload,
+        currencies: action.payload,
       };
 
     case actionTypes.CHANGE_CURRENCY_SYMBOL:
@@ -56,63 +158,45 @@ const shopReducer = (state = INITIAL_STATE, action) => {
         cartOverlayOpen: false,
       };
 
-    case actionTypes.ADD_TO_CART:
-      // get items data from the products array
-      const item = state.productsData?.find(
-        (item) => item.id === action.payload.id
-      );
-      // check if item is in the cart already
-      const inCart = state.cart.find((item) =>
-        item.id === action.payload.id ? true : false
-      );
-      return {
-        ...state,
-        cart: inCart
-          ? state.cart.map((item) =>
-              item.id === action.payload.id
-                ? { ...item, qty: item.qty + 1 }
-                : item
-            )
-          : [
-              ...state.cart,
-              {
-                ...item,
-                qty: 1,
-                attributes: action.payload.attributes,
-              },
-            ],
-      };
+    case actionTypes.CHANGE_PRODUCT_QUANITY:
+      if (action.val === "increment") {
+        return {
+          ...state,
+          cart: [...state.cart].map((product, index) => {
+            if (index === action.index) {
+              return {
+                ...product,
+                qty: product.qty + 1,
+              };
+            }
+            return product;
+          }),
+        };
+      }
+      if (action.val === "decrement") {
+        return {
+          ...state,
+          cart: [...state.cart]
+            .map((product, index) => {
+              if (index === action.index) {
+                return {
+                  ...product,
+                  qty: product.qty > 0 ? product.qty - 1 : product.qty,
+                };
+              }
+              return product;
+            })
+            .filter((product) => product.qty > 0),
+        };
+      }
+      return state;
 
     case actionTypes.REMOVE_FROM_CART:
       return {
         ...state,
-        cart: state.cart.filter((item) => item.id !== action.payload.id),
-      };
-
-    case actionTypes.INCREMENT_QTY:
-      return {
-        ...state,
-        cart: state.cart.map((item) =>
-          item.id === action.payload.id
-            ? { ...item, qty: +action.payload.qty }
-            : item
+        cart: [...state.cart].filter(
+          (el, index) => index !== action.payload.index
         ),
-      };
-
-    case actionTypes.DECREMENT_QTY:
-      return {
-        ...state,
-        cart: state.cart.map((item) =>
-          item.id === action.payload.id
-            ? { ...item, qty: +action.payload.qty }
-            : item
-        ),
-      };
-
-    case actionTypes.LOAD_CURRENT_ITEM:
-      return {
-        ...state,
-        currentItem: action.payload,
       };
 
     default:

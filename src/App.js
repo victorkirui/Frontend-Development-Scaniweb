@@ -9,8 +9,6 @@ import Cart from "./pages/Cart";
 import Nav from "./components/Nav";
 import Overlay from "./components/overlay/Overlay";
 
-//TEST git
-
 function App(props) {
   return (
     <div className="App">

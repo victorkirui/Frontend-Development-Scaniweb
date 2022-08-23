@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import {
   loadCurrentItem,
-  addToCart,
+  addProductToCart,
 } from "../../../redux/shopping/shopping-actions";
 
 import {
@@ -20,7 +20,8 @@ import {
 
 class index extends PureComponent {
   render() {
-    const { products } = this.props;
+    const { products, currencySymbol, loadCurrentItem, addProductToCart } =
+      this.props;
     return (
       <ContainerWrapper>
         <Container>
@@ -53,11 +54,12 @@ class index extends PureComponent {
                         product.inStock ? { opacity: 1 } : { opacity: 0.5 }
                       }
                     >
-                      {this.props.currencySymbol}{" "}
+                      {currencySymbol}{" "}
                       {product.prices?.map((price) => (
                         <React.Fragment key={price.symbol}>
-                          {price.currency.symbol ===
-                            this.props.currencySymbol && <>{price.amount}</>}
+                          {price.currency.symbol === currencySymbol && (
+                            <>{price.amount}</>
+                          )}
                         </React.Fragment>
                       ))}
                     </Price>
@@ -67,20 +69,19 @@ class index extends PureComponent {
                 </Link>
 
                 {product.inStock && product.attributes.length ? (
-                  <Link to={`/product/${product.id}`}>
+                  <Link
+                    to={`/product/${product.id}`}
+                    onClick={() => loadCurrentItem(product)}
+                  >
                     <CartIcon style={{ cursor: "pointer" }} />
                   </Link>
                 ) : product.inStock && product.attributes.length === 0 ? (
                   <CartIcon
-                    onClick={() =>
-                      this.props.addToCart(product.id, product.attributes)
-                    }
+                    onClick={() => addProductToCart(product)}
                     style={{ cursor: "pointer" }}
                   />
                 ) : (
-                  <CartIcon
-                    style={{ cursor: "not-allowed", display: "none" }}
-                  />
+                  <CartIcon style={{ display: "none" }} />
                 )}
               </ItemWrapper>
             );
@@ -100,7 +101,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     loadCurrentItem: (item) => dispatch(loadCurrentItem(item)),
-    addToCart: (id, allAttributes) => dispatch(addToCart(id, allAttributes)),
+    addProductToCart: (currentItem) => dispatch(addProductToCart(currentItem)),
   };
 };
 

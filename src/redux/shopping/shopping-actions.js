@@ -1,5 +1,34 @@
 import * as actionTypes from "./shopping-types";
 
+export const addProductToCart = (payload) => ({
+  type: actionTypes.ADD_PRODUCT_TO_CART,
+  payload,
+});
+
+export const loadCurrentItem = (item) => {
+  return {
+    type: actionTypes.LOAD_CURRENT_ITEM,
+    payload: item,
+  };
+};
+
+export const changeProductAttribute = (id, val) => {
+  return {
+    type: actionTypes.CHANGE_PRODUCT_ATTRIBUTE,
+    payload: {
+      id: id,
+      val: val,
+    },
+  };
+};
+
+export const changeProductAttributeInCart = (index, attrType, value) => ({
+  type: actionTypes.CHANGE_PRODUCT_ATTRIBUTE_IN_CART,
+  index,
+  attrType,
+  value,
+});
+
 export const fetchCategories = (data) => {
   return {
     type: actionTypes.FETCH_CATEGORIES,
@@ -47,58 +76,17 @@ export const closeCartOverlay = () => {
   };
 };
 
-export const selectAttributes = (id, value) => {
-  return {
-    type: actionTypes.SELECTED_ATTRIBUTES,
-    payload: {
-      id,
-      value,
-    },
-  };
-};
+export const changeProductQuantity = (index, val) => ({
+  type: actionTypes.CHANGE_PRODUCT_QUANITY,
+  index,
+  val,
+});
 
-export const addToCart = (itemID, attributes) => {
-  return {
-    type: actionTypes.ADD_TO_CART,
-    payload: {
-      id: itemID,
-      attributes: attributes,
-    },
-  };
-};
-
-export const removeFromCart = (itemID) => {
+export const removeFromCart = (index) => {
   return {
     type: actionTypes.REMOVE_FROM_CART,
     payload: {
-      id: itemID,
+      index: index,
     },
-  };
-};
-
-export const incrementQty = (itemID, value) => {
-  return {
-    type: actionTypes.INCREMENT_QTY,
-    payload: {
-      id: itemID,
-      qty: value,
-    },
-  };
-};
-
-export const decrementQty = (itemID, value) => {
-  return {
-    type: actionTypes.DECREMENT_QTY,
-    payload: {
-      id: itemID,
-      qty: value,
-    },
-  };
-};
-
-export const loadCurrentItem = (item) => {
-  return {
-    type: actionTypes.LOAD_CURRENT_ITEM,
-    payload: item,
   };
 };
